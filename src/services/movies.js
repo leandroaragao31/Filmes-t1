@@ -9,11 +9,12 @@ console.log(FilmesApi)
 
 export default class Movies extends Component {
     state = {
-        movies: []
+        movies: [],
+        FilterMovies:[]
     }
 
     componentDidMount() {
-        this.getMovies()
+        this.getMovies();
     }
 
     getMovies = async () => {
@@ -29,15 +30,31 @@ export default class Movies extends Component {
 
         })
         this.setState({
-            movies: allFilmes
+            movies: allFilmes,
+            FilterMovies:allFilmes
         })
         console.log(allFilmes)
+    }
+
+    handleChange = (event) =>{
+        const ListaFiltrada = this.state.movies.filter((item) => {
+            if(item.original_title.toLowerCase().includes(event.target.value.toLowerCase())){
+                return  true
+            }else{
+                return ""
+            }
+        })
+        this.setState({
+            FilterMovies:ListaFiltrada
+        })
+        console.log(this.state.FilterMovies)
     }
 
     render() {
         return (
             <>
-                {this.state.movies.map((item, index) => (
+            <input  onChange={this.handleChange}/>
+                {this.state.FilterMovies.map((item, index) => (
                     <div key={index}>
                         <ul >
                             <li>{item.original_title}</li>
